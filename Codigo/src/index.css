@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Helpdesk Design System - Professional corporate colors and gradients */
+
+@layer base {
+  :root {
+    --background: 214 32% 91%;
+    --foreground: 215 25% 27%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 27%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 27%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 217 91% 55%;
+
+    --secondary: 215 28% 17%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 13% 91%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 25 95% 53%;
+    --warning-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.75rem;
+
+    /* Priority Colors - Professional Corporate Scheme */
+    --critical: 0 84% 60%;
+    --critical-bg: 0 84% 96%;
+    --high: 14 90% 53%;
+    --high-bg: 14 90% 95%;
+    --medium: 25 95% 53%;
+    --medium-bg: 25 95% 95%;
+    --low: 142 76% 36%;
+    --low-bg: 142 76% 95%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 70%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 13% 97%));
+    --gradient-hero: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(215 28% 17%) 100%);
+
+    /* Shadows */
+    --shadow-card: 0 1px 3px 0 hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow-card-hover: 0 4px 6px -1px hsl(0 0% 0% / 0.1), 0 2px 4px -2px hsl(0 0% 0% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.1), 0 4px 6px -4px hsl(0 0% 0% / 0.1);
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 215 28% 17%;
+    --foreground: 0 0% 96%;
+
+    /* Make card/popover slightly lighter than background for separation */
+    --card: 215 25% 21%;
+    --card-foreground: 0 0% 96%;
+
+    --popover: 215 25% 21%;
+    --popover-foreground: 0 0% 96%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 217 91% 55%;
+
+    --secondary: 215 25% 27%;
+    --secondary-foreground: 0 0% 96%;
+
+    --muted: 215 25% 27%;
+    /* Brighter muted-foreground for better readability on dark */
+    --muted-foreground: 215 15% 78%;
+
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Slightly brighter borders/inputs for clearer delineation */
+    --border: 215 25% 28%;
+    --input: 215 25% 28%;
+    --ring: 217 91% 60%;
+
+    /* Priority Colors for dark mode - Professional Corporate Scheme */
+    --critical: 0 84% 60%;
+    --critical-bg: 0 84% 8%;
+    --high: 14 90% 53%;
+    --high-bg: 14 90% 8%;
+    --medium: 25 95% 53%;
+    --medium-bg: 25 95% 8%;
+    --low: 142 76% 36%;
+    --low-bg: 142 76% 8%;
+
+    /* Dark mode gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 50%));
+    --gradient-card: linear-gradient(145deg, hsl(215 25% 20%), hsl(215 25% 18%));
+    --gradient-hero: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(215 28% 10%) 100%);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 96.5%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 96.5%;
+    --sidebar-border: 240 3.7% 18%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    /* Respect safe areas on devices with display cutouts (Pixel 6, iPhones with notch)
+       Note: top inset is intentionally not applied on Android because the StatusBar
+       is configured not to overlay the WebView (overlay=false), so adding it here
+       would create extra gap. */
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Slightly reduce the default top safe-area to bring content closer to the status bar
+     without overlapping icons. Works across platforms (clamped at 0 when no inset). */
+  .header-safe {
+    padding-top: max(calc(env(safe-area-inset-top) - 6px), 0px);
+  }
+}

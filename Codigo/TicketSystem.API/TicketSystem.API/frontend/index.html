@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>TicketSystem API - Test UI</title>
+    <style>
+        body {
+            font-family: Segoe UI, Roboto, Arial;
+            margin: 16px;
+            background: #f7f9fc
+        }
+
+        .card {
+            background: #fff;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+            max-width: 820px;
+            margin-bottom: 16px
+        }
+
+        h2 {
+            margin-top: 0
+        }
+
+        label {
+            display: block;
+            margin-top: 8px
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            border: 1px solid #ddd;
+            border-radius: 4px
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border: 0;
+            background: #0366d6;
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer
+        }
+
+        pre {
+            background: #0b1220;
+            color: #dbeafe;
+            padding: 12px;
+            border-radius: 6px;
+            overflow: auto
+        }
+
+        .row {
+            display: flex;
+            gap: 12px
+        }
+
+        .col {
+            flex: 1
+        }
+
+        small {
+            color: #666
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h2>Configurar API</h2>
+        <label>Base URL da API (ex: http://localhost:5140)</label>
+        <input id="apiBase" value="http://localhost:5140" />
+        <small>Atualize para a porta usada pela sua API.</small>
+    </div>
+
+    <div class="card">
+        <h2>Autenticação</h2>
+        <div class="row">
+            <div class="col">
+                <h3>Login</h3>
+                <label>Email<input id="loginEmail" value="admin@ticketsystem.com" /></label>
+                <label>Senha<input id="loginPassword" type="password" value="admin123" /></label>
+                <button id="btnLogin">Login</button>
+            </div>
+            <div class="col">
+                <h3>Registro (cliente)</h3>
+                <label>Nome<input id="regFirst" /></label>
+                <label>Sobrenome<input id="regLast" /></label>
+                <label>Email<input id="regEmail" /></label>
+                <label>Senha<input id="regPassword" type="password" /></label>
+                <button id="btnRegister">Registrar</button>
+            </div>
+        </div>
+        <div style="margin-top:12px">
+            <button id="btnProfile">Obter meu perfil</button>
+            <button id="btnLogout">Logout (apagar token)</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Admin - Criar Usuário</h2>
+        <small>Use um token de admin (via Login) no header Authorization: Bearer &lt;token&gt;</small>
+        <label>FirstName<input id="uFirst" /></label>
+        <label>LastName<input id="uLast" /></label>
+        <label>Email<input id="uEmail" /></label>
+        <label>Senha<input id="uPassword" type="password" /></label>
+        <label>Tipo<select id="uType">
+                <option value="2">Agent</option>
+                <option value="3">Admin</option>
+            </select></label>
+        <button id="btnCreateUser">Criar usuário (Admin)</button>
+    </div>
+
+    <div class="card">
+        <h2>Resultados / Logs</h2>
+        <pre id="log">Pronto.</pre>
+    </div>
+
+    <script>
+        const logEl = document.getElementById('log');
+        const apiBaseInput = document.getElementById('apiBase');
+
+        function log(obj) {
+            const s = (typeof obj === 'string') ? obj : JSON.stringify(obj, null, 2);
+            logEl.textContent = s + '\n\n' + logEl.textContent;
+        }
+
+        function getApiBase() {
+            // Use explicit input if provided, otherwise use the current origin.
+            const v = (apiBaseInput.value || window.location.origin).trim();
+            return v;
+        }
+
+        function getToken() {
+            return localStorage.getItem('ts_token');
+        }
+        function setToken(t) {
+            if (t) localStorage.setItem('ts_token', t); else localStorage.removeItem('ts_token');
+        }
+
+        async function post(path, body, auth) {
+            const headers = { 'Content-Type': 'application/json' };
+            if (auth) { const t = getToken(); if (t) headers['Authorization'] = 'Bearer ' + t; }
+            const url = new URL(path, getApiBase()).toString();
+            const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
+            const text = await res.text();
+            try { return { status: res.status, ok: res.ok, body: JSON.parse(text) } } catch { return { status: res.status, ok: res.ok, body: text } }
+        }
+
+        async function get(path, auth) {
+            const headers = {};
+            if (auth) { const t = getToken(); if (t) headers['Authorization'] = 'Bearer ' + t; }
+            const url = new URL(path, getApiBase()).toString();
+            const res = await fetch(url, { method: 'GET', headers });
+            const text = await res.text();
+            try { return { status: res.status, ok: res.ok, body: JSON.parse(text) } } catch { return { status: res.status, ok: res.ok, body: text } }
+        }
+
+        document.getElementById('btnLogin').addEventListener('click', async () => {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const r = await post('/api/auth/login', { email, password }, false);
+            log(r);
+            // Accept multiple casing conventions from the API (data / Data, token / Token)
+            const token = r?.body?.data?.token ?? r?.body?.Data?.Token ?? r?.body?.token ?? r?.body?.Token;
+            if (r.ok && token) {
+                setToken(token);
+                log('Token salvo em localStorage');
+            } else {
+                log('Nenhum token salvo');
+            }
+        });
+
+        document.getElementById('btnRegister').addEventListener('click', async () => {
+            const body = {
+                firstName: document.getElementById('regFirst').value || 'Teste',
+                lastName: document.getElementById('regLast').value || 'Usu',
+                email: document.getElementById('regEmail').value || `user${Date.now()}@local`,
+                password: document.getElementById('regPassword').value || 'Senha123!'
+            };
+            const r = await post('/api/auth/register', body, false);
+            log(r);
+            if (r.ok && r.body?.Data?.Token) { setToken(r.body.Data.Token); log('Token salvo em localStorage'); }
+        });
+
+        document.getElementById('btnProfile').addEventListener('click', async () => {
+            if (!getToken()) { log('Nenhum token encontrado. Faça login primeiro.'); return; }
+            const r = await get('/api/auth/profile', true);
+            log(r);
+        });
+
+        document.getElementById('btnLogout').addEventListener('click', () => { setToken(null); log('Token removido'); });
+
+        document.getElementById('btnCreateUser').addEventListener('click', async () => {
+            if (!getToken()) { log('Nenhum token encontrado. Faça login como admin primeiro.'); return; }
+            const dto = {
+                firstName: document.getElementById('uFirst').value || 'Novo',
+                lastName: document.getElementById('uLast').value || 'Usuario',
+                email: document.getElementById('uEmail').value || `u${Date.now()}@local`,
+                password: document.getElementById('uPassword').value || 'Senha123!',
+                userType: parseInt(document.getElementById('uType').value, 10)
+            };
+            const r = await post('/api/users', dto, true);
+            log(r);
+        });
+
+        // mostrar token atual
+        (function () { const t = getToken(); if (t) log('Token presente no storage'); else log('Nenhum token salvo'); })();
+    </script>
+</body>
+
+</html>

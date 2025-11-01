@@ -1,0 +1,5 @@
+- **PO:** [Jonas Santos Rubio](https://github.com/JSRubioo)    
+- **Scrum Master:** [Kauã Silva](https://github.com/kauacsilva)    
+- **Dev Team:** [Breno Sacilotti](https://github.com/acreditar)    
+- **Dev Team:** [João Gabriel de Oliveira](https://github.com/dev-joaogabriel)    
+- **Dev Tem:** [Rodrigo Oliveira](https://github.com/devRODS)
