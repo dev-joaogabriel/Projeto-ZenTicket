@@ -42,7 +42,7 @@ O **ZenTicket** nasceu para resolver essa dor, centralizando e automatizando o a
 
 ---
 
-## Como executar, usar e testar o projeto
+## 📋Como executar, usar e testar o projeto
 
 👉 [Acesse Execução e Testes do Projeto](https://github.com/dev-joaogabriel/Projeto-ZenTicket/blob/main/Documenta%C3%A7%C3%A3o/Execu%C3%A7%C3%A3o%20e%20Testes%20do%20Projeto.md)
 
