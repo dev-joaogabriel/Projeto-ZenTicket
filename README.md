@@ -1,6 +1,8 @@
-# 📌 ZenTicket - Revolucionando o Suporte Técnico com Inteligência Artificial
-
-_Soluções integradas de suporte técnico com IA para empresas que buscam eficiência e organização._
+<div align="center">
+<img src="https://github.com/user-attachments/assets/b9248b79-b74d-410f-816f-7a702546be55" width="408" />
+</div>
+<div align="center"> <h1> ZenTicket - Revolucionando o Suporte Técnico com Inteligência Artificial </h1> </div>
+<div align="center"> Soluções integradas de suporte técnico com IA para empresas que buscam eficiência e organização. </div>
 
 ---
 
