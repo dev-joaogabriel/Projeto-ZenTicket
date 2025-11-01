@@ -1,7 +1,7 @@
-# Estrutura do Projeto HelpDesk
+# Estrutura do Projeto ZenTicket
 
 ```
-HelpDesk/
+ZenTicket/
 ├── Codigo/
 │   ├── .env.example
 │   ├── .gitignore
