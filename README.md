@@ -60,9 +60,9 @@ O **ZenTicket** nasceu para resolver essa dor, centralizando e automatizando o a
 
 * [Checklist Geral](https://github.com/dev-joaogabriel/Projeto-ZenTicket/blob/main/Documenta%C3%A7%C3%A3o/DoR%20e%20DoD/Checklist_DoR_DoD.md)
 * [DoR e DoD por sprint](hhttps://github.com/dev-joaogabriel/Projeto-ZenTicket/blob/main/Documenta%C3%A7%C3%A3o/DoR%20e%20DoD/DoR_DoD_por_sprint.md)
-    * [Código completo](https://github.com/dev-joaogabriel/Projeto-ZenTicket/tree/main/Codigo)
-    * [Manual de Usuário](https://github.com/dev-joaogabriel/Projeto-ZenTicket/blob/main/Documenta%C3%A7%C3%A3o/DoR%20e%20DoD/Manual%20do%20Usuario.md)
-    * [Manual da Aplicação](https://github.com/dev-joaogabriel/Projeto-ZenTicket/blob/main/Documenta%C3%A7%C3%A3o/DoR%20e%20DoD/Manual%20de%20Aplica%C3%A7%C3%A3o.md)
+* [Código completo](https://github.com/dev-joaogabriel/Projeto-ZenTicket/tree/main/Codigo)
+* [Manual de Usuário](https://github.com/dev-joaogabriel/Projeto-ZenTicket/blob/main/Documenta%C3%A7%C3%A3o/DoR%20e%20DoD/Manual%20do%20Usuario.md)
+* [Manual da Aplicação](https://github.com/dev-joaogabriel/Projeto-ZenTicket/blob/main/Documenta%C3%A7%C3%A3o/DoR%20e%20DoD/Manual%20de%20Aplica%C3%A7%C3%A3o.md)
 
 ---
 
