@@ -1,8 +1,8 @@
-# Manual de Aplicação — Helpdesk App
+# Manual de Aplicação — ZenTicket App
 
 ## 1. 🔍 Visão Geral da Aplicação
 
-O **Helpdesk App** é uma aplicação moderna de suporte construída com **React** e **TypeScript**.  
+O **ZenTicket App** é uma aplicação moderna de suporte construída com **React** e **TypeScript**.  
 Ela serve como uma plataforma para **gerenciamento de chamados (tickets)** de suporte, permitindo que usuários criem solicitações e que administradores gerenciem esses chamados e usuários.
 
 ### 🧠 Tecnologias Principais (Frontend)
