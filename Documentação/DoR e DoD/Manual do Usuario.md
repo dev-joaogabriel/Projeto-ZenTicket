@@ -1,4 +1,4 @@
-# Manual do Usuário — HelpDesk
+# Manual do Usuário — ZenTicket
 
 ## 1. Tela de Login
 - Nesta tela, o usuário realiza o acesso ao sistema informando **nome de usuário** e **senha**.  
