@@ -1,5 +1,7 @@
-- **PO:** [Jonas Santos Rubio](https://github.com/JSRubioo)    
-- **Scrum Master:** [Kauã Silva](https://github.com/kauacsilva)    
-- **Dev Team:** [Breno Sacilotti](https://github.com/acreditar)    
-- **Dev Team:** [João Gabriel de Oliveira](https://github.com/dev-joaogabriel)    
-- **Dev Tem:** [Rodrigo Oliveira](https://github.com/devRODS)
+| Aluno | Função | R.A | Github | Linkedin |
+| :--- | :--- | :--- | :---: | :---: |
+| Jonas Santos Rubio | PO | `G9849B2` | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JSRubioo) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jonas-rubio-22077a1bb/) |
+| Kauã Silva | Scrum Master | `R106535` | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kauacsilva) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kau%C3%A3-castro-565b211ba/) |
+| Breno Sacilotti | Dev Team | `G989JD8` | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/acreditar) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/brenosacilotti/) |
+| João Gabriel Oliveira | Dev Team | `R089FJ3` | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/dev-joaogabriel) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/joaogabrielsdoliveira/) |
+| Rodrigo Oliveira | Dev Team | `G973HB3` | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/devRODS) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/reosilva/) |
