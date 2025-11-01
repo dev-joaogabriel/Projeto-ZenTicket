@@ -68,4 +68,4 @@ O **ZenTicket** nasceu para resolver essa dor, centralizando e automatizando o a
 
 ## 👨‍💻 Equipe 
 
-👉 [Acesse a Equipe](https://github.com/dev-joaogabriel/Projeto-ZenTicket/blob/main/Documenta%C3%A7%C3%A3o/Tecnologias.md)
+👉 [Acesse a Equipe](https://github.com/dev-joaogabriel/Projeto-ZenTicket/blob/main/Documenta%C3%A7%C3%A3o/Equipe.md)
