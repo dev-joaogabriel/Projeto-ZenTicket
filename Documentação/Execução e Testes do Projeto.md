@@ -1,6 +1,6 @@
-# Helpdesk App
+# ZenTicket App
 
-Aplicação de helpdesk (Vite + React + TypeScript + Tailwind + shadcn/ui).
+Aplicação de ZenTicket (Vite + React + TypeScript + Tailwind + shadcn/ui).
 
 ## Scripts
 
