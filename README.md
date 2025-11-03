@@ -52,7 +52,8 @@ O **ZenTicket** nasceu para resolver essa dor, centralizando e automatizando o a
 
 👉 [Acesse a Documentação](https://github.com/dev-joaogabriel/Projeto-ZenTicket/tree/main/Documenta%C3%A7%C3%A3o)
 
-    
+--- 
+
 ## 🏆DoR - Definition of Ready | DoD - Definition of Done
 
 👉 [Checklist Geral](https://github.com/dev-joaogabriel/Projeto-ZenTicket/blob/main/Documenta%C3%A7%C3%A3o/DoR%20e%20DoD/Checklist_DoR_DoD.md)
