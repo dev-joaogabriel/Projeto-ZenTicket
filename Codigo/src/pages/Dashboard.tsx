@@ -103,12 +103,12 @@ export default function Dashboard() {
         <div className="absolute inset-0">
           <img
             src={heroImage}
-            alt="HelpDesk Professional"
+            alt="ZenTicket Professional"
             className="w-full h-full object-cover opacity-20"
           />
         </div>
         <div className="relative p-4 md:p-6 lg:p-8">
-          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-2">Central de HelpDesk</h1>
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-2">Central ZenTicket</h1>
           <p className="text-sm md:text-base lg:text-lg opacity-90 mb-4 md:mb-6">
             Gerencie todos os tickets de suporte da sua empresa de forma eficiente
           </p>

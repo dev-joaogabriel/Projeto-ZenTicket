@@ -63,7 +63,7 @@ export default function Configuracoes() {
         <div>
           <h1 className="text-3xl font-bold">Configurações</h1>
           <p className="text-muted-foreground">
-            Gerencie as configurações do sistema HelpDesk
+            Gerencie as configurações do sistema ZenTicket
           </p>
         </div>
       </div>

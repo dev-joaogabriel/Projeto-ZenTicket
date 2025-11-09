@@ -55,7 +55,7 @@ export function AppSidebar() {
       <SidebarContent className="p-4">
         <div className="mb-6">
           <h2 className="font-bold text-lg text-primary">
-            HelpDesk Pro
+            ZenTicket Pro
           </h2>
         </div>
 

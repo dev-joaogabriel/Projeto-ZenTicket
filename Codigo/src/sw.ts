@@ -1,4 +1,4 @@
-const CACHE = 'helpdesk-v1';
+const CACHE = 'zenticket-v1';
 const ASSETS = ['/', '/index.html'];
 
 self.addEventListener('install', (e: any) => {

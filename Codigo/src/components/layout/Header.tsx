@@ -146,7 +146,7 @@ export function Header() {
           <div className="flex items-center gap-2 md:gap-4 min-w-0">
             <SidebarTrigger className="h-8 w-8 flex-shrink-0" />
             <div className="flex items-center gap-2 min-w-0">
-              <div className="font-semibold text-primary text-sm md:text-base truncate">Sistema HelpDesk</div>
+              <div className="font-semibold text-primary text-sm md:text-base truncate">Sistema ZenTicket</div>
               <div className="text-xs md:text-sm text-muted-foreground hidden sm:block">v1.0</div>
             </div>
 
