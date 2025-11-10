@@ -6,6 +6,8 @@ export type TicketPrioridade = "Crítica" | "Alta" | "Média" | "Baixa";
 
 export interface Ticket {
   id: string;
+  /** Id numérico do banco (quando disponível) */
+  dbId?: number;
   titulo: string;
   descricao: string;
   status: TicketStatus;
@@ -97,6 +99,7 @@ export function useTickets() {
       const now = new Date().toISOString();
       const newTicket: Ticket = {
         id: detail.id,
+        dbId: detail.dbId,
         titulo: detail.titulo ?? "(Sem título)",
         descricao: detail.descricao ?? "",
         status: (detail.status as TicketStatus) || "Aberto",

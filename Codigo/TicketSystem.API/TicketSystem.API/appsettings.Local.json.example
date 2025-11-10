@@ -1,0 +1,10 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=127.0.0.1,1433;Database=TicketSystemDB;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;MultipleActiveResultSets=True;"
+  },
+  "Jwt": {
+    "Key": "<your-secure-jwt-key-here>",
+    "Issuer": "TicketSystemAPI",
+    "Audience": "TicketSystemClient"
+  }
+}

@@ -1,6 +1,6 @@
 {
-    "name": "ZenTicket",
-    "short_name": "ZenTicket",
+    "name": "Helpdesk",
+    "short_name": "Helpdesk",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#0f1115",

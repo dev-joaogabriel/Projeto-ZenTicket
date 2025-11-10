@@ -29,6 +29,14 @@ export async function listUsers(params?: { page?: number; pageSize?: number; q?:
     return res.data.data;
 }
 
+export async function listCustomers(params?: { page?: number; pageSize?: number; q?: string }) {
+    const page = params?.page ?? 1;
+    const pageSize = params?.pageSize ?? 50;
+    const q = params?.q ?? undefined;
+    const res = await api.get<ApiListResponse<ApiUser>>("/users/customers", { params: { page, pageSize, q } });
+    return res.data.data;
+}
+
 export async function createUser(input: {
     firstName: string;
     lastName: string;

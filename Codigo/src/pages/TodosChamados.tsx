@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { useTickets } from "@/hooks/use-tickets";
 import { listTickets } from "@/lib/tickets";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuth } from "@/hooks/use-auth-hook";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerClose } from "@/components/ui/drawer";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -59,23 +60,44 @@ export default function TodosChamados() {
   const [openDetail, setOpenDetail] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  const { loading: authLoading, user: authUser } = useAuth();
+
   useEffect(() => {
+    // Wait for auth bootstrap (token/profile) to finish so API requests include a restored token.
+    if (authLoading) return;
     let ignore = false;
     async function load() {
       setLoading(true);
       setError(null);
       try {
         const res = await listTickets({ page: 1, pageSize: 100 });
-        if (!ignore) replaceAll(res.items);
+        if (!ignore) {
+          // Merge local optimistic owner for recently created tickets: if local storage has an entry
+          // for the same ticket id with a usuario matching the current authUser, prefer that value
+          let items = res.items;
+          try {
+            if (authUser) {
+              const raw = localStorage.getItem('tickets');
+              if (raw) {
+                const local: Array<{ id: string; usuario?: string }> = JSON.parse(raw);
+                const map = new Map(local.map((i) => [i.id, i.usuario]));
+                items = items.map((it) => ({ ...it, usuario: map.get(it.id) ?? it.usuario }));
+              }
+            }
+          } catch {
+            // ignore parsing errors
+          }
+          replaceAll(items);
+        }
       } catch {
         if (!ignore) setError("Falha ao carregar chamados");
       } finally {
         if (!ignore) setLoading(false);
       }
     }
-    load();
+    void load();
     return () => { ignore = true; };
-  }, [replaceAll]);
+  }, [replaceAll, authLoading, authUser]);
 
   const filteredTickets = useMemo(() => tickets.filter(ticket => {
     const matchesSearch = ticket.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||

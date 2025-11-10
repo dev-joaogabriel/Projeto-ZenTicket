@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: ticketsystem-mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $${SA_PASSWORD} -Q \"SELECT 1\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mssql-data:
+
+# Usage:
+# 1) docker compose up -d
+# 2) copy TicketSystem.API/TicketSystem.API/.env.local.example -> .env.local and set ConnectionStrings__DefaultConnection to:
+#    Server=127.0.0.1,1433;Database=TicketSystemDB;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;MultipleActiveResultSets=True;
+# 3) run .\scripts\run-backend-dev.ps1 from repo root (it will load env vars and run dotnet)

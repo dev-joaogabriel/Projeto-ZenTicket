@@ -26,7 +26,7 @@ export default function Login() {
     if (ok) {
       toast({
         title: "Login realizado com sucesso!",
-  description: "Bem-vindo ao Sistema ZenTicket",
+        description: "Bem-vindo ao Sistema HelpDesk",
       });
       navigate('/dashboard');
     } else {
@@ -61,7 +61,7 @@ export default function Login() {
             <UserCheck className="w-5 h-5 md:w-6 md:h-6 text-primary" />
           </div>
           <div>
-            <CardTitle className="text-xl md:text-2xl font-bold">Sistema ZenTicket</CardTitle>
+            <CardTitle className="text-xl md:text-2xl font-bold">Sistema HelpDesk</CardTitle>
             <CardDescription className="text-sm md:text-base text-muted-foreground">
               Faça login para acessar o sistema
             </CardDescription>

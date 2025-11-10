@@ -12,7 +12,8 @@ import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTickets, Ticket as StoreTicket, TicketStatus } from "@/hooks/use-tickets";
-import { getTicketByNumber, updateTicketStatusByNumber } from "@/lib/tickets";
+import { getTicketByNumber, updateTicketStatusByNumber, addTicketMessage } from "@/lib/tickets";
+import { useAuth } from "@/hooks/use-auth-hook";
 
 type Ticket = StoreTicket;
 
@@ -35,9 +36,13 @@ export default function EditarTicket() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { tickets, updateTicket, upsertTicketDetail } = useTickets();
+  const { user: authUser } = useAuth();
   const ticket = useMemo(() => tickets.find(t => t.id === id), [tickets, id]);
   const [status, setStatus] = useState<TicketStatus | undefined>(ticket?.status);
   const [loading, setLoading] = useState(false);
+  const [comment, setComment] = useState("");
+  const [internalNote, setInternalNote] = useState(false);
+  const [posting, setPosting] = useState(false);
 
   function formatDatePtBr(iso: string) {
     // Evita deslocamentos de timezone: usa apenas a parte de data (YYYY-MM-DD)
@@ -74,6 +79,24 @@ export default function EditarTicket() {
       toast({ title: "Falha ao atualizar", description: "Não foi possível salvar o novo status.", variant: "destructive" });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const canInternal = authUser?.userType === "Admin" || authUser?.userType === "Agent";
+  const handlePostComment = async () => {
+    if (!ticket?.dbId || !comment.trim()) return;
+    try {
+      setPosting(true);
+  await addTicketMessage(ticket.dbId, comment.trim(), { isInternal: internalNote && !!canInternal });
+  // after successful post, refresh detail lightweight without using any
+  updateTicket(ticket.id, { dataAtualizacao: new Date().toISOString() });
+      setComment("");
+      setInternalNote(false);
+      toast({ title: "Comentário adicionado", description: internalNote ? "Nota interna registrada." : "Comentário publicado." });
+    } catch (e) {
+      toast({ title: "Falha ao comentar", description: "Não foi possível adicionar o comentário.", variant: "destructive" });
+    } finally {
+      setPosting(false);
     }
   };
 
@@ -159,6 +182,31 @@ export default function EditarTicket() {
 
                 <div className="text-sm text-muted-foreground bg-blue-50/50 dark:bg-blue-950/50 p-3 rounded-md border-l-4 border-blue-400">
                   <p><strong>Nota:</strong> O título, descrição, departamento e prioridade não podem ser alterados após a criação do chamado. Você pode alterar apenas o status e adicionar comentários.</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Comentários */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Adicionar Comentário</CardTitle>
+                <CardDescription>Envie uma mensagem para o chamado. {canInternal ? "Você pode marcar como nota interna (visível apenas para a equipe)." : "Comentários serão públicos para o solicitante."}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="comentario">Comentário</Label>
+                  <Textarea id="comentario" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Escreva seu comentário..." rows={4} />
+                </div>
+                {canInternal && (
+                  <div className="flex items-center gap-2">
+                    <input id="internalNote" type="checkbox" checked={internalNote} onChange={(e) => setInternalNote(e.target.checked)} />
+                    <Label htmlFor="internalNote">Nota interna</Label>
+                  </div>
+                )}
+                <div className="flex justify-end">
+                  <Button onClick={handlePostComment} disabled={posting || !comment.trim()}>
+                    {posting ? "Enviando..." : "Enviar Comentário"}
+                  </Button>
                 </div>
               </CardContent>
             </Card>

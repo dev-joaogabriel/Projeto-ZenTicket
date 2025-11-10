@@ -1,0 +1,13 @@
+categoria do ticket não sendo mostrada no dashboard, fica um retangulo vazio{FIXED}
+ultima atualização nos tickets esta com a data errada
+Espaço de comentario/notas no ticket porem sem utilização, talvez implementar ou não
+
+deixar "todos os tickets" somente para administrador
+Ajeitar aba de relatorio completa e deixar os tickets clicaveis para ter informações de quem resolveu
+quem abriu e etc
+
+melhorar aba de usuarios para o administrador, UI esta bagunçada e fora de ordem
+especificar costumer/cliente/usuario ou diminuir a quantidade de "usuarios"
+
+
+refinar configurações

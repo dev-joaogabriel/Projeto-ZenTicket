@@ -13,6 +13,9 @@ import { Lightbulb, Send, User, AlertTriangle, CheckCircle, X, HelpCircle, Arrow
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { listDepartments } from "@/lib/departments";
 import { createTicket } from "@/lib/tickets";
+import { listCustomers, ApiUser } from "@/lib/users";
+import { CreateTicketInput } from "@/lib/tickets";
+import { useTickets } from "@/hooks/use-tickets";
 import { useAuth } from "@/hooks/use-auth-hook";
 import { analyzeTicket } from "@/lib/ai";
 
@@ -79,7 +82,10 @@ export default function NovoTicket() {
   });
   const [departments, setDepartments] = useState<Dept[]>([]);
   const [departmentId, setDepartmentId] = useState<number | null>(null);
+  const [customers, setCustomers] = useState<ApiUser[]>([]);
+  const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(null);
   const { user: authUser } = useAuth();
+  const { upsertTicketDetail } = useTickets();
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
@@ -125,7 +131,17 @@ export default function NovoTicket() {
       }
       if (authUser && !ignore) {
         const name = authUser.fullName || authUser.email.split("@")[0];
-        setFormData((prev) => ({ ...prev, user: name }));
+        setFormData((prev) => ({ ...prev, user: name, email: authUser.email }));
+      }
+      // If authenticated user is not a Customer, load customers for selection
+      try {
+        const isCustomer = (authUser?.userType as string | undefined)?.toString().toLowerCase() === "customer";
+        if (authUser && !isCustomer) {
+          const res = await listCustomers({ page: 1, pageSize: 200 });
+          if (!ignore) setCustomers(res.items ?? res.items);
+        }
+      } catch {
+        // ignore load errors
       }
     }
     void boot();
@@ -158,6 +174,11 @@ export default function NovoTicket() {
 
     if (!formData.department) {
       newErrors.department = "Setor é obrigatório";
+    }
+
+    const isCustomer = (authUser?.userType as string | undefined)?.toString().toLowerCase() === "customer";
+    if (!isCustomer && !selectedCustomerId) {
+      newErrors.customer = "Selecione o cliente para este chamado";
     }
 
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
@@ -252,12 +273,39 @@ export default function NovoTicket() {
       }
 
       // Call backend
-      const created = await createTicket({
+      // Build payload and include customerId either from the auth user (if Customer) or from selected customer
+      const isCustomer = (authUser?.userType as string | undefined)?.toString().toLowerCase() === "customer";
+      const payload: CreateTicketInput = {
         subject: formData.title,
         description: formData.description,
         priority: priorityToApi[formData.priority],
         departmentId: departmentId,
-      });
+      };
+      if (isCustomer && authUser) payload.customerId = authUser.id;
+      if (!isCustomer && selectedCustomerId) payload.customerId = selectedCustomerId;
+
+      const created = await createTicket(payload);
+
+      // Optimistically upsert local ticket owner so UI shows correct creator before backend list refresh
+      try {
+        const owner = authUser?.fullName ?? authUser?.email;
+        if (owner) {
+          upsertTicketDetail({
+            id: created.id,
+            titulo: created.titulo,
+            descricao: created.descricao,
+            departamento: created.departamento,
+            prioridade: created.prioridade,
+            status: created.status,
+            dataCriacao: created.dataCriacao,
+            dataAtualizacao: created.dataAtualizacao,
+            slaVencimento: created.slaVencimento,
+            usuario: owner,
+          });
+        }
+      } catch {
+        // ignore optimistic update errors
+      }
 
       // Clear draft on successful submission
       localStorage.removeItem('ticket-draft');
@@ -274,7 +322,7 @@ export default function NovoTicket() {
         category: "",
         priority: "",
         description: "",
-        user: "Admin User",
+        user: "",
         department: "",
         email: "",
 
@@ -301,7 +349,7 @@ export default function NovoTicket() {
       category: "",
       priority: "",
       description: "",
-      user: "Admin User",
+      user: "",
       department: "",
       email: "",
 
@@ -610,6 +658,32 @@ export default function NovoTicket() {
                       )}
                     </div>
                   </div>
+
+                  {/* If the authenticated user is not a Customer, show a customer selector */}
+                  {authUser && ((authUser.userType as string | undefined)?.toString().toLowerCase() !== "customer") && (
+                    <div className="mt-4">
+                      <Label className="text-sm font-medium">Cliente *</Label>
+                      <Select
+                        value={selectedCustomerId ? String(selectedCustomerId) : ""}
+                        onValueChange={(value) => setSelectedCustomerId(Number(value))}
+                      >
+                        <SelectTrigger className={`text-sm ${errors.customer ? 'border-destructive' : ''}`}>
+                          <SelectValue placeholder="Selecione o cliente" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {customers.map((c) => (
+                            <SelectItem key={c.id} value={String(c.id)}>
+                              <div className="flex items-center justify-between">
+                                <span className="font-medium text-sm">{c.fullName}</span>
+                                <span className="text-xs text-muted-foreground">{c.email}</span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {errors.customer && <p className="text-sm text-destructive">{errors.customer}</p>}
+                    </div>
+                  )}
 
                   <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:justify-end">
                     <Button

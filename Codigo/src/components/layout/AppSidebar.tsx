@@ -39,7 +39,7 @@ const adminItems = [
 export function AppSidebar() {
   const location = useLocation();
   const currentPath = location.pathname;
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const role = typeof user?.userType === "string" ? user?.userType : String(user?.userType ?? "");
   const isAdmin = role?.toString().toLowerCase() === "admin" || role === "3";
 
@@ -55,7 +55,7 @@ export function AppSidebar() {
       <SidebarContent className="p-4">
         <div className="mb-6">
           <h2 className="font-bold text-lg text-primary">
-            ZenTicket Pro
+            HelpDesk Pro
           </h2>
         </div>
 
@@ -83,7 +83,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {isAdmin && (
+        {!authLoading && isAdmin && (
           <SidebarGroup>
             <SidebarGroupLabel>
               Administração

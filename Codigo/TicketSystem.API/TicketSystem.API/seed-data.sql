@@ -1,12 +1,12 @@
 -- Remover duplicata com caractere inválido caso exista (mantém o nome correto)
 IF EXISTS (SELECT 1
     FROM Departments
-    WHERE Name = 'Suporte T?cnico')
+    WHERE Name = 'Suporte Técnico')
     AND EXISTS (SELECT 1
     FROM Departments
     WHERE Name = N'Suporte Técnico')
 BEGIN
-    DELETE FROM Departments WHERE Name = 'Suporte T?cnico';
+    DELETE FROM Departments WHERE Name = 'Suporte Técnico';
 END
 
 -- Índice único para prevenir duplicatas de nome
@@ -102,12 +102,7 @@ BEGIN
 END
 
 -- Inserir Admin (senha: admin123) - idempotente (checa por email)
-IF NOT EXISTS (SELECT 1
-FROM Users
-WHERE Email = 'admin@ticketsystem.com')
-BEGIN
-    INSERT INTO Users
-        (FirstName, LastName, Email, PasswordHash, UserType, IsActive, CreatedAt, IsDeleted, CanManageUsers, CanManageSystem, CanViewReports, CanManageDepartments)
-    VALUES
-        (N'Administrador', N'Sistema', 'admin@ticketsystem.com', '$2a$11$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 3, 1, GETUTCDATE(), 0, 1, 1, 1, 1);
-END
+-- Removido do seed SQL para evitar divergência de senha.
+-- O usuário admin (admin@ticketsystem.com / admin123) agora é criado
+-- pelo DatabaseSeeder na inicialização da aplicação (Program.cs),
+-- garantindo o mesmo hash gerado por código.

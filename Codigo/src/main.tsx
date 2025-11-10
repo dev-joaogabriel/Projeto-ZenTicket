@@ -3,8 +3,19 @@ import { Capacitor } from '@capacitor/core'
 import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar'
 import App from './App.tsx'
 import './index.css'
+import React from 'react'
+import { I18nProvider } from './i18n/provider'
 
-createRoot(document.getElementById("root")!).render(<App />);
+const container = document.getElementById('root')
+if (container) {
+createRoot(container).render(
+    <React.StrictMode>
+        <I18nProvider>
+            <App />
+        </I18nProvider>
+    </React.StrictMode>
+);
+}
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').catch(console.error);

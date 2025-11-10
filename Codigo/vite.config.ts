@@ -21,7 +21,46 @@ export default defineConfig(({ mode }) => ({
     setupFiles: ['./src/test/setup.ts'],
     globals: true,
     coverage: {
-      reporter: ['text', 'lcov']
+      reporter: ['text', 'lcov'],
+      exclude: [
+        'tailwind.config.ts',
+        'postcss.config.js',
+        'playwright.config.ts',
+        'capacitor.config.ts',
+        'eslint.config.js',
+        'electron/**',
+        'android/**',
+        'dist/**',
+        'public/**',
+        'src/sw.ts',
+        // Temporarily exclude large UI pages & layout until page tests exist
+  // Reintroduce specific pages we are adding smoke tests for
+  // Keep excluding the rest for now
+  'src/pages/Dashboard.tsx',
+  'src/pages/NovoTicket.tsx',
+  'src/pages/FAQ.tsx',
+  'src/pages/Relatorios.tsx',
+  'src/pages/TodosChamados.tsx',
+  'src/pages/PesquisarTickets.tsx',
+  'src/pages/EditarTicket.tsx',
+  'src/pages/VisualizarTicket.tsx',
+  'src/pages/Perfil.tsx',
+  'src/pages/Configuracoes.tsx',
+  'src/pages/NotFound.tsx',
+  // Layout components excluded for now
+  'src/components/layout/**',
+        'src/components/ui/**',
+        'src/App.tsx',
+        'src/main.tsx',
+        'tests/**',
+        'src/**/*.d.ts'
+      ],
+      thresholds: {
+        lines: 40,
+        statements: 40,
+        branches: 25,
+        functions: 40,
+      }
     },
     include: ['src/**/*.{test,spec}.{ts,tsx}']
   }

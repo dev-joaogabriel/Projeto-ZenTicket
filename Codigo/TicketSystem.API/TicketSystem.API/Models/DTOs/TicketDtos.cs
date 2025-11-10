@@ -14,7 +14,7 @@ namespace TicketSystem.API.Models.DTOs
         public string Customer { get; set; } = string.Empty;
         public string? AssignedAgent { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public bool IsOverdue { get; set; }
         public int? SlaHours { get; set; }
         public int MessageCount { get; set; }
@@ -30,6 +30,7 @@ namespace TicketSystem.API.Models.DTOs
         public DateTime? ClosedAt { get; set; }
         public int? CustomerRating { get; set; }
         public string? CustomerFeedback { get; set; }
+        public List<MessageDto> Messages { get; set; } = new();
     }
 
     public class CreateTicketDto
@@ -60,5 +61,18 @@ namespace TicketSystem.API.Models.DTOs
     {
         [Required]
         public int AgentId { get; set; }
+    }
+
+    public class UpdateTicketDto
+    {
+        [StringLength(200)]
+        public string? Subject { get; set; }
+
+        [StringLength(2000)]
+        public string? Description { get; set; }
+
+        public TicketPriority? Priority { get; set; }
+
+        public int? DepartmentId { get; set; }
     }
 }

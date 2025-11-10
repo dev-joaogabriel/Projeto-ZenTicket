@@ -54,7 +54,7 @@ if (!gotTheLock) {
     });
 
     app.whenReady().then(() => {
-    app.setAppUserModelId('ZenTicketUNIP');
+        app.setAppUserModelId('HelpDeskUNIP');
         createWindow();
         app.on('activate', () => {
             if (BrowserWindow.getAllWindows().length === 0) createWindow();

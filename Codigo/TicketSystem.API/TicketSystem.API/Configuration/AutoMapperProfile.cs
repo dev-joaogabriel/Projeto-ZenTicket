@@ -54,7 +54,13 @@ namespace TicketSystem.API.Configuration
             CreateMap<Ticket, TicketDetailDto>()
                 .IncludeBase<Ticket, TicketSummaryDto>()
                 .ForMember(d => d.ResolutionTimeHours, o => o.MapFrom(s => s.ResolutionTimeHours))
-                .ForMember(d => d.FirstResponseTimeHours, o => o.MapFrom(s => s.FirstResponseTimeHours));
+                .ForMember(d => d.FirstResponseTimeHours, o => o.MapFrom(s => s.FirstResponseTimeHours))
+                .ForMember(d => d.Messages, o => o.MapFrom(s => s.Messages));
+
+            // Mensagens
+            CreateMap<Message, MessageDto>()
+                .ForMember(d => d.AuthorName, o => o.MapFrom(s => s.Author.FullName))
+                .ForMember(d => d.IsEdited, o => o.MapFrom(s => s.IsEdited));
         }
     }
 }

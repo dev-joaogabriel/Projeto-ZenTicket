@@ -5,6 +5,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
         <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
+    <!-- Gerar arquivo de documentação XML para habilitar comentários de API (Swagger, etc.) -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Suprimir aviso 1591 (faltas de comentários) se desejar reduzir ruído inicialmente -->
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

@@ -5,6 +5,9 @@ using TicketSystem.API.Data;
 
 namespace TicketSystem.API.Controllers
 {
+    /// <summary>
+    /// Controller que expõe endpoints para obter informações sobre departamentos.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
@@ -17,7 +20,10 @@ namespace TicketSystem.API.Controllers
             _db = db;
         }
 
-        // GET /api/departments
+        /// <summary>
+        /// Retorna a lista de departamentos ativos (sem deletados) ordenada por nome.
+        /// </summary>
+        /// <returns>Lista de departamentos (id e nome).</returns>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetAll()

@@ -83,10 +83,13 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+// Health checks (DB connectivity)
+builder.Services.AddHealthChecks()
+	.AddCheck<TicketSystem.API.Services.DbHealthCheck>("database", tags: new[] { "db" });
+
 // DI
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAiService, AiService>();
-builder.Services.AddHttpClient();
 builder.Services.AddHttpClient();
 
 // CORS (configurable)
@@ -157,7 +160,7 @@ builder.Services.AddControllers()
 				kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray() ?? Array.Empty<string>()
 			);
 
-		var response = new { Message = "Dados inv?lidos", Errors = errors };
+		var response = new { Message = "Dados inválidos", Errors = errors };
 		return new Microsoft.AspNetCore.Mvc.BadRequestObjectResult(response);
 	};
 });
@@ -214,17 +217,21 @@ app.Use(async (context, next) =>
 
 app.MapControllers();
 
-// DB ensure/create + seed
+// Health endpoint
+app.MapHealthChecks("/health");
+
+// DB ensure/create + seed (fail fast on error)
 using (var scope = app.Services.CreateScope())
 {
 	var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+	var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 	try
 	{
 		var resetDb = app.Configuration.GetValue<bool>("Database:ResetOnStart", false);
 		if (resetDb)
 		{
 			context.Database.EnsureDeleted();
-			Console.WriteLine("Banco anterior removido.");
+			logger.LogInformation("Banco anterior removido.");
 		}
 
 		// Prefer migrations only when using a relational provider
@@ -233,44 +240,23 @@ using (var scope = app.Services.CreateScope())
 			if (context.Database.GetMigrations().Any())
 			{
 				context.Database.Migrate();
+				logger.LogInformation("Migrations aplicadas.");
 			}
 			else
 			{
 				context.Database.EnsureCreated();
+				logger.LogInformation("Banco criado via EnsureCreated.");
 			}
 		}
 		else
 		{
 			// InMemory / non-relational for tests or dev fallback
 			context.Database.EnsureCreated();
-		}
-		Console.WriteLine("Banco de dados e tabelas OK.");
-
-		if (!context.Departments.Any())
-		{
-			context.Departments.AddRange(
-				new Department { Name = "Suporte Técnico", Description = "Problemas técnicos e bugs", Color = "#FF6B6B", IsActive = true, CreatedAt = DateTime.UtcNow },
-				new Department { Name = "Financeiro", Description = "Pagamentos e faturamento", Color = "#4ECDC4", IsActive = true, CreatedAt = DateTime.UtcNow },
-				new Department { Name = "Comercial", Description = "Produtos e vendas", Color = "#45B7D1", IsActive = true, CreatedAt = DateTime.UtcNow }
-			);
-			context.SaveChanges();
-			Console.WriteLine("Departamentos inseridos.");
+			logger.LogInformation("Banco InMemory criado.");
 		}
 
-		if (!context.Admins.Any())
-		{
-			context.Admins.Add(new Admin
-			{
-				FirstName = "Administrador",
-				LastName = "Sistema",
-				Email = "admin@ticketsystem.com",
-				PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
-				IsActive = true,
-				CreatedAt = DateTime.UtcNow
-			});
-			context.SaveChanges();
-			Console.WriteLine("Admin criado (admin@ticketsystem.com / admin123).");
-		}
+		// Run modular seeding
+		TicketSystem.API.Services.DatabaseSeeder.Seed(context, logger);
 
 		// Execute raw SQL seed file only for relational providers to avoid noisy errors in tests (InMemory)
 		if (context.Database.IsRelational())
@@ -282,18 +268,19 @@ using (var scope = app.Services.CreateScope())
 				if (!string.IsNullOrWhiteSpace(sql))
 				{
 					context.Database.ExecuteSqlRaw(sql);
-					Console.WriteLine("seed-data.sql executado.");
+					logger.LogInformation("seed-data.sql executado.");
 				}
 			}
 		}
 	}
 	catch (Exception ex)
 	{
-		Log.Error(ex, "Erro ao configurar BD");
+		Log.Error(ex, "Erro fatal ao configurar BD - application will stop");
+		// Fail-fast: rethrow to stop the process so the issue is visible to the developer/CI
+		throw;
 	}
 }
 
-Log.Information("Ticket System API iniciada.");
 Log.Information("Login padrão - Email: admin@ticketsystem.com | Senha: admin123");
 
 app.Run();
